@@ -1,0 +1,55 @@
+@charset "utf-8";
+/* CSS Document */
+.mainBox{ max-width:100%; margin:0 auto;  height:100%; }  /*640px*/
+    .topBox{background:#f2f2f2;border-bottom:1px solid #dcdcdc;font-size:32px;line-height:74px;color:#d12323;text-align:center;}
+    .videoBox{background:#ccc;overflow:hidden;}
+    .mainDetailed{padding-bottom:25px;padding-top:10px;padding-left:13px;padding-right:13px;overflow:hidden;background:#/*f8f8f8*/fff;}
+    .titBox{overflow:hidden;}
+    .titBox div{padding:5px 0px;font-size:20px;line-height:30px;color:#333;text-align:justify;}
+    .sourceBox{overflow:hidden;}
+    .sourceBox div{margin-right:10px;font-size:14px;line-height:48px;color:#999;float:left}
+    .sourceBox div.shuxian{margin-right:5px;}/*调整竖线*/
+
+    .contentBox{overflow:hidden;}
+    .contentBox div{font-size:15px;line-height:30px;color:#333;padding:0px 0px;margin-left:0px;margin-right:0px;overflow:hidden;width:100%;text-align:justify;}  /*100%*/
+    .contentBox img{width:100%;}
+    .contentBox .pictext{font-size:22px;line-height:36px;color:#999;display:inline-block;}
+
+    .moreReportsBox{overflow:hidden;}
+    .moreReportsBox>input{font-size:26px;line-height:48px;color:#e10000;outline:none;cursor:pointer;background: #ffffff url(file:///android_assets/xhwDetailedPica_03.png)no-repeat right;padding-right:35px;border:none;
+    }
+    .hotWordsBox{background:#e4f1f9;overflow:hidden;border-radius:6px;padding-top:10px;}
+    .hotWordsBox a{font-size:20px;line-height:48px;margin:0 14px;color:#4b779c;display:inline-block;}
+
+    .H18BGf2f2f2{height:18px;background:#f2f2f2;}
+    .relatedNewsBox{overflow:hidden;background:#/*f8f8f8*/fff;}
+    .relatedNewsChnl{font-size:30px;line-height:78px;color:#333;}
+    .relatedNewsChnl span{padding:0px 0px;background:#e10000;margin-right:20px;}
+
+    .newsList{overflow:hidden;}
+    .newsBox{overflow:hidden;}
+    .newsBoxA{display:block;overflow:hidden;padding:20px 25px;border-top:1px solid #f2f2f2;}
+    .newsBoxA .contentBox{display:inline;}
+    .newsBoxA .contentBox h3{font-size:30px;line-height:40px;color:#333;margin-bottom:10px;}
+    .newsBoxA .channelBox{overflow:hidden;}
+    .newsBoxA .channelBox span{font-size:20px;line-height:26px;color:#b2b2b2;padding:0px 3px;margin-right:6px;}
+    .newsBoxA .channelBox span.redBox{display:inline-block;color:#e10000;border:1px solid #e10000; border-radius: 3px;}
+    .newsBoxA .channelBox .readingQuantityBox{float:right;border:1px solid #e8e8e8;background:#f8f8f8 url(xhwDetailedPica_03.png) no-repeat 6px 3px;padding-left:35px;padding-right:16px;font-size:20px;line-height:24px;color:#999;border-radius: 12px;}
+
+
+
+    .newsBoxA .imgBox{float:right;width:29%;margin-left:20px;position:relative;overflow:hidden;}
+    .newsBoxA .imgBox img{width:100%;}
+    .newsBoxA .imgBox .sj{background:url(xhwDetailedPica_11.png) no-repeat center center;width:60px;height:60px;position:absolute;z-index:10;left:10px;
+    bottom:10px;}
+
+    .play1{width:44px;height:44px;background:url(play1.png);}
+    div.table{margin:0 auto;width:100%px;margin-top:20px;color:#383838;float:left;margin-bottom:20px}
+    div.table table{border-right:1px solid #bfbfbf;border-bottom:1px solid #bfbfbf;width:100%;order-collapse:collapse}
+    div.table table td{border-left:1px solid #bfbfbf;border-top:1px solid #bfbfbf;empty-cells:show}
+    div.table tr {}
+    div.table td {padding:2px;background:#fff;font-weight:bolder;empty-cells:show}
+    div.table h5{line-height:24px;color:#a00000;font-weight:bolder;text-align:center;margin-bottom:15px;font-size:26px;}
+    div.table td.title{text-align:right;background:#F4F4FF;padding-right:1px;font-weight:normal;}
+    div.table td b{line-height:30px}
+    .table table{width: 100%;}

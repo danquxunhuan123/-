@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <script type="text/javascript">
+      var phoneWidth = parseInt(window.screen.width);
+      var phoneScale = phoneWidth / 640;
+      var ua = navigator.userAgent;
+      if (/Android (\d+\.\d+)/.test(ua)) {
+        var version = parseFloat(RegExp.$1);
+        if (version > 2.3) {
+          document.write('<meta name="viewport" content="width=640, minimum-scale = ' + phoneScale + ', maximum-scale = ' + phoneScale + ', target-densitydpi=device-dpi">');
+        } else {
+          document.write('<meta name="viewport" content="width=640, target-densitydpi=device-dpi">');
+        }
+      } else {
+        document.write('<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">');
+      }
+      function setNight(){
+      document.getElementsByTagName('body')[0].style.webkitTextFillColor= '#aeaeae';
+      document.getElementsByTagName('body')[0].style.background = "#444444";
+      }
+
+
+    </script>
+    <script type="text/javascript">
+<!--//添加图片显示区域（高度参数）-->
+function addImgBg(videoimgheight,url){
+    if(videoimgheight == null || videoimgheight<0){
+        videoimgheight = 200;
+    }
+    var icowidth = 50;
+    var htmls = '<div id="videoimgbg" style="position:relative;background:#eee;width:100%;text-align:center;overflow:hidden;height:'+videoimgheight+'px;margin-top:5px;">';
+    htmls += '<img id="videoimg" src= "'+url+'" style="widthwidth:100%;height:'+videoimgheight+'px;" />';
+    htmls += '<div style="position:absolute;left:20px;bottom:20px;" class="play1"></div>';
+    htmls += '</div>';
+    $(".contentBox").prepend(htmls);
+
+}
+
+
+    </script>
+
+    <!--<meta name="viewport" content="width=640, user-scalable=no, target-densitydpi=device-dpi">-->
+    <meta name="viewport"
+          content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+
+    <title>无标题文档</title>
+
+    <link href="file:///android_asset/publicStyle.css" rel="stylesheet" type="text/css"/>
+    <link href="file:///android_asset/xhwDetailedView.css" rel="stylesheet" type="text/css"/>
+    <style>
+        .rh_info table {padding:0;margin:0;}
+        .rh_info table tr td{width:25%;text-align:left;padding:0;margin:0;font-size:13px;line-height:22px;}
+        .rh_info table tr td img{display:none}
+        .rh_info .info_title{color: red}
+        .rh_button img{display:none}
+
+
+
+    </style>
+</head>
+
+<body>
+<!--mainBox begin-->
+<div class="mainBox">
+
+    <!--mainDetailed begin-->
+    <div class="mainDetailed">
+        <div class="titBox">
+            <!--<h3>#HEADLINE#</h3>-->
+            <!--<h2>#TITLE#</h2>-->
+            <div >#TITLE#</div>
+            <!--<h3>#SUBDOCTITLE#</h3> -->
+            <div class="sourceBox">
+                <!--<div class="shuxian">#SHUXIAN#</div>-->
+                <div style="color:#474F81">#SOURCE#</div>
+                <div style="margin-top;font-size:16px">#TIME#</div>
+                <!--<div class="read">#READ#</div>-->
+                <!--<div style="color:#474F81">#READ_COUNT#</div>-->
+            </div>
+        </div>
+        <!--contentBox begin-->
+        <div class="contentBox" style="font-size:16px;line-height:25px;color:#333;width:100%;text-align:justify;">#CONTENT#</div>
+
+        <!---->
+        <!--contentBox end-->
+
+        <!--More reports begin-->
+        <!--<div class="moreReportsBox">
+            <input type="button" value="更多报道" />
+           <div class="hotWordsBox">
+<a href="#" target="_blank">#KEYWORD1#</a> &lt;!&ndash;KEYWORD&ndash;&gt;</div>
+        </div>-->
+        <!--More reports end-->
+    </div>
+    <!--mainDetailed end-->
+    <!--<div class="H18BGf2f2f2"></div>-->
+    <!--relatedNewsBox begin-->
+
+    <!--relatedNewsBox end-->
+
+</div>
+
+
+<!--mainBox end-->
+<script type="text/javascript" src="file:///android_asset/jquery.js"></script>
+<script type="text/javascript" src="file:///android_asset/video.js"></script>
+<script type="text/javascript">
+    var url = "#URL#/";
+    var img = document.getElementsByTagName('img');
+    for (var i = 0; i < img.length; i++) {
+        (function(i){
+         var pic_str=img[i].attributes["src"].nodeValue;
+         if(pic_str.indexOf("\./")>=0){
+         var pic_str_re=pic_str.replace("\./",url);
+         img[i].src=pic_str_re;
+         }
+         })(i)
+    }
+
+
+</script>
+
+<script type="text/javascript">
+    var links =document.getElementsByTagName("iframe");
+    for(var i = 0, j = links.length; i < j; i++)
+     {
+        var height = parseInt(window.screen.width) * 3 / 4;
+        links[i].width = parseInt(window.screen.width);
+        links[i].height= height;
+    }
+
+
+</script>
+</body>
+</html>

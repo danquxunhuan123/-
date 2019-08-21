@@ -12,7 +12,8 @@ import com.trs.waijiaobu.adapter.BaseAdapter;
 import com.trs.waijiaobu.adapter.ListCommenAdapter;
 import com.trs.waijiaobu.bean.Channel;
 import com.trs.waijiaobu.bean.Document;
-import com.trs.waijiaobu.presenter.IListPresenter;
+import com.trs.waijiaobu.fragment.PicsDialogFragment;
+import com.trs.waijiaobu.presenter.inter.IListPresenter;
 import com.trs.waijiaobu.presenter.IListPresenterImpl;
 import com.trs.waijiaobu.util.StringUtil;
 import com.trs.waijiaobu.view.IListView;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ListActivity extends BaseActivity implements IListView, SwipeRefreshLayout.OnRefreshListener, BaseAdapter.OnLoadMoreListener {
+public class ListActivity extends BaseActivity implements IListView, SwipeRefreshLayout.OnRefreshListener, BaseAdapter.OnLoadMoreListener, ListCommenAdapter.OnClickListener {
 
     @BindView(R.id.tv_cname)
     TextView cname;
@@ -35,14 +36,14 @@ public class ListActivity extends BaseActivity implements IListView, SwipeRefres
     private int pageCount = 0;
     private IListPresenter mPresenter;
     //    private String cname;
-    private BaseAdapter adapter;
+    private ListCommenAdapter adapter;
     private String url;
     private String subUrl;
 
     @Override
     protected void initView() {
         swipeRefreshLayout.setOnRefreshListener(this);
-        mPresenter = new IListPresenterImpl(this);
+        mPresenter = new IListPresenterImpl(this, this);
     }
 
     @Override
@@ -59,35 +60,27 @@ public class ListActivity extends BaseActivity implements IListView, SwipeRefres
 
     @Override
     public void getListData(Object obj) {
-        swipeRefreshLayout.setRefreshing(false);
-        if (obj instanceof Channel) {
-            List<Channel.GdEntity> mList = ((Channel) obj).getGd();
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
 
-            if (adapter == null) {
-                adapter = new ListCommenAdapter(null, mList, this);
-                adapter.setOnLoadMoreListener(this);
-                recycleView.setLayoutManager(new LinearLayoutManager(this));
-                recycleView.setAdapter(adapter);
-            } else {
-                if (pageCount == 0)
-                    adapter.updateData(mList);
-                else adapter.addData(mList);
-            }
-        } else if (obj instanceof Document) {
-            List<Document.List_datasEntity> mList = ((Document) obj).getList_datas();
+        List mList = null;
+        if (obj instanceof Channel)
+            mList = ((Channel) obj).getGd();
+        else if (obj instanceof Document)
+            mList = ((Document) obj).getList_datas();
 
-            if (adapter == null) {
-                adapter = new ListCommenAdapter(null, mList, this);
-                adapter.setOnLoadMoreListener(this);
-                recycleView.setLayoutManager(new LinearLayoutManager(this));
-                recycleView.setAdapter(adapter);
-            } else {
-                if (pageCount == 0)
-                    adapter.updateData(mList);
-                else adapter.addData(mList);
-            }
+        if (adapter == null) {
+            adapter = new ListCommenAdapter(null, mList, this);
+            adapter.setOnLoadMoreListener(this);
+            adapter.setOnItemClickListener(this);
+            recycleView.setLayoutManager(new LinearLayoutManager(this));
+            recycleView.setAdapter(adapter);
+        } else {
+            if (pageCount == 0)
+                adapter.updateData(mList);
+            else
+                adapter.addData(mList);
         }
-
     }
 
     @Override
@@ -121,6 +114,18 @@ public class ListActivity extends BaseActivity implements IListView, SwipeRefres
             mPresenter.getListData(moreUrl);
         } else {
             adapter.loadMoreEnd();
+        }
+    }
+
+    @Override
+    public void onClick(String finalu) {
+        if (finalu.endsWith(".jpg")) {
+            String[] list = new String[1];
+            list[0] = finalu;
+            PicsDialogFragment picFragment = PicsDialogFragment.newInstance(list, 0);
+            picFragment.show(getSupportFragmentManager(), "PIC");
+        } else if (finalu.endsWith(".doc")) {
+//            ToastUtils.showShort("doc");
         }
     }
 }

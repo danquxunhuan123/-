@@ -30,7 +30,7 @@ public class SplashActivity extends BaseActivity {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         img.setLayoutParams(params);
-        GlideHelper.getInstance().loadResource(img,R.drawable.splash);
+        GlideHelper.getInstance().loadResource(img,R.drawable.splash_drawable);
         content.addView(img);
     }
 

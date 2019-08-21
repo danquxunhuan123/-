@@ -1,5 +1,7 @@
 package com.trs.waijiaobu.model;
 
+import android.content.Context;
+
 import okhttp3.Callback;
 
 /**
@@ -7,9 +9,9 @@ import okhttp3.Callback;
  * data: 2019/7/23
  */
 public interface IModel {
-    void getChannel(String url, Callback callback);
+    void getChannel(Context context, String url, Callback callback);
 
-    void getChannelList(String url, Callback callback);
+    void getChannelList(Context context, String url, Callback callback);
 
-    void getDetailData(String url, Callback callback);
+    void getDetailData(Context context, String url, Callback callback);
 }

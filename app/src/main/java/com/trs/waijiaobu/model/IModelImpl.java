@@ -1,5 +1,7 @@
 package com.trs.waijiaobu.model;
 
+import android.content.Context;
+
 import com.trs.waijiaobu.okhttp.OkHttpClientHelper;
 
 import okhttp3.Callback;
@@ -11,17 +13,17 @@ import okhttp3.Callback;
 public class IModelImpl implements IModel {
 
     @Override
-    public void getChannel(String url, Callback callback) {
-        OkHttpClientHelper.getInstance().get(url,callback);
+    public void getChannel(Context context, String url, Callback callback) {
+        OkHttpClientHelper.getInstance(context).get(url,callback);
     }
 
     @Override
-    public void getChannelList(String url, Callback callback) {
-        OkHttpClientHelper.getInstance().get(url,callback);
+    public void getChannelList(Context context, String url, Callback callback) {
+        OkHttpClientHelper.getInstance(context).get(url,callback);
     }
 
     @Override
-    public void getDetailData(String url, Callback callback) {
-        OkHttpClientHelper.getInstance().get(url,callback);
+    public void getDetailData(Context context, String url, Callback callback) {
+        OkHttpClientHelper.getInstance(context).get(url,callback);
     }
 }

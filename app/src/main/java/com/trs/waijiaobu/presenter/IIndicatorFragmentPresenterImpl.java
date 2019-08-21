@@ -1,13 +1,14 @@
 package com.trs.waijiaobu.presenter;
 
+import android.content.Context;
+
 import com.google.gson.Gson;
 import com.trs.waijiaobu.bean.Channel;
 import com.trs.waijiaobu.model.IModel;
 import com.trs.waijiaobu.model.IModelImpl;
 import com.trs.waijiaobu.okhttp.callback.MyCallback;
+import com.trs.waijiaobu.presenter.inter.IIndicatorFragmentPresenter;
 import com.trs.waijiaobu.view.IIndicatorFragmentView;
-
-import java.io.IOException;
 
 import okhttp3.Call;
 
@@ -18,16 +19,17 @@ import okhttp3.Call;
 public class IIndicatorFragmentPresenterImpl implements IIndicatorFragmentPresenter {
     IModel mModel;
     IIndicatorFragmentView view;
+    private Context mContext;
 
-
-    public IIndicatorFragmentPresenterImpl(IIndicatorFragmentView view) {
+    public IIndicatorFragmentPresenterImpl(Context context, IIndicatorFragmentView view) {
         mModel = new IModelImpl();
+        mContext = context;
         this.view = view;
     }
 
     @Override
     public void getXW(String url) {
-        mModel.getChannel(url, new MyCallback() {
+        mModel.getChannel(mContext, url, new MyCallback(mContext) {
             @Override
             public void OnResponse(Call call, String json) {
                 Gson gson = new Gson();
@@ -36,7 +38,7 @@ public class IIndicatorFragmentPresenterImpl implements IIndicatorFragmentPresen
             }
 
             @Override
-            public void OnFailure(Call call, IOException e) {
+            public void OnFailure(Call call, String error) {
 
             }
         });

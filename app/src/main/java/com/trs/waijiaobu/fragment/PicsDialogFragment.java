@@ -1,54 +1,78 @@
-package com.trs.waijiaobu.activity;
+package com.trs.waijiaobu.fragment;
 
-import android.graphics.Bitmap;
+import android.app.Dialog;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.trs.waijiaobu.R;
 import com.trs.waijiaobu.glide.GlideHelper;
 import com.trs.waijiaobu.glide.PinchImageView;
-import com.trs.waijiaobu.util.AndroidShareHelper;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
-public class PicDetailActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
-
+/**
+ * creator：liufan
+ * data: 2019/8/15
+ */
+public class PicsDialogFragment extends DialogFragment implements ViewPager.OnPageChangeListener {
     public static final String ARG_PARAM1 = "pics";
     public static final String ARG_PARAM2 = "index";
-    @BindView(R.id.ll_pic_desc)
-    LinearLayout picDesc;
-    @BindView(R.id.tv_pic_title)
-    TextView tvPicTitle;
-    @BindView(R.id.tv_pic_count)
-    TextView tvPicCount;
-    @BindView(R.id.tv_pic_desc)
-    TextView tvPicDesc;
-    private List<ImageView> imgs;
-    @BindView(R.id.view_pager)
-    ViewPager mViewPager;
-
+    private ViewPager mViewPager;
     private int picCount;
+    private List<ImageView> imgs;
+
+    public static PicsDialogFragment newInstance(String[] pics,int index) {
+        PicsDialogFragment picFragment = new PicsDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putCharSequenceArray(ARG_PARAM1,pics);
+        bundle.putInt(ARG_PARAM2,index);
+        picFragment.setArguments(bundle);
+        return picFragment;
+    }
 
     @Override
-    protected void getData() {
-        String[] pics = (String[]) getIntent().getCharSequenceArrayExtra(ARG_PARAM1);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            //添加动画
+            dialog.getWindow().setWindowAnimations(R.style.dialogSlideAnim);
+        }
+        View inflate = inflater.inflate(R.layout.dialog_pic_layout, null);
+        mViewPager = inflate.findViewById(R.id.view_pager);
+        return inflate;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initData();
+    }
+
+    private void initData() {
+        int index = getArguments().getInt(ARG_PARAM2, 0);
+        String[] pics = getArguments().getStringArray(ARG_PARAM1);
         picCount = pics.length;
-        int index = getIntent().getIntExtra(ARG_PARAM2, 0);
 
         imgs = new ArrayList<>();
         for (int i = 0; i < pics.length; i++) {
-            PinchImageView imageView = new PinchImageView(this);
-//            ImageView imageView = new ImageView(this);
+            PinchImageView imageView = new PinchImageView(getContext());
+//            ImageView imageView = new ImageView(getContext());
             ViewPager.LayoutParams params = new ViewPager.LayoutParams();
             params.width = ViewPager.LayoutParams.MATCH_PARENT;
             params.height = ViewPager.LayoutParams.WRAP_CONTENT;
@@ -57,7 +81,7 @@ public class PicDetailActivity extends BaseActivity implements ViewPager.OnPageC
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    PicDetailActivity.this.finish();
+                    dismiss();
                 }
             });
 
@@ -68,19 +92,6 @@ public class PicDetailActivity extends BaseActivity implements ViewPager.OnPageC
         mViewPager.setAdapter(adapter);
         mViewPager.addOnPageChangeListener(this);
         mViewPager.setCurrentItem(index);
-
-        if (picCount > 0) {
-            picDesc.setVisibility(View.VISIBLE);
-            tvPicCount.setText(String.format(getString(R.string.pic_index), index + 1, picCount));
-            tvPicTitle.setText("");
-            tvPicDesc.setText("");
-        } else
-            picDesc.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected int flateLayout() {
-        return R.layout.activity_pic_detail;
     }
 
     @Override
@@ -90,32 +101,12 @@ public class PicDetailActivity extends BaseActivity implements ViewPager.OnPageC
 
     @Override
     public void onPageSelected(int i) {
-        tvPicCount.setText(String.format(getString(R.string.pic_index), i + 1, picCount));
+
     }
 
     @Override
     public void onPageScrollStateChanged(int i) {
 
-    }
-
-    public void back(View view) {
-        finish();
-    }
-
-    public void share(View view) {
-        GlideHelper.getInstance().loadToFile(
-                this, "", new GlideHelper.OnLoadedListener() {
-                    @Override
-                    public void onLoaded(File file) {
-//                        Uri uri = FileProvider.getUriForFile(NewsDetailActivity.this, AppUtils.getAppPackageName() + ".fileprovider", file);
-//                        AndroidShareHelper.shareTxtAndPic(NewsDetailActivity.this, uri, mDetail.getDatas().getTitle());
-                        AndroidShareHelper.shareTxt(PicDetailActivity.this, "");
-                    }
-
-                    @Override
-                    public void onLoadedBitmap(Bitmap bitmap) {
-                    }
-                });
     }
 
 

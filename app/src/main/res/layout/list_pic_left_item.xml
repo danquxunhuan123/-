@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
     android:paddingTop="10dp"
     android:paddingRight="10dp">
 
-    <ImageView
-        android:id="@+id/iv_pic"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="15dp" />
-
-    <TextView
-        android:id="@+id/tv_title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_pic"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/sp_16" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
-        android:layout_alignLeft="@id/tv_title"
-        android:layout_marginTop="10dp"
-        android:ellipsize="end"
-        android:maxLines="2" />
+        <ImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_16" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="bottom"
+                android:paddingBottom="5dp"
+                android:text="撒谎付款计划迪萨卡就发哈科技发达哈"
+                android:lineSpacingExtra="3dp"
+                android:maxLines="2" />
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
@@ -38,4 +53,4 @@
         android:layout_below="@id/iv_pic"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
-</RelativeLayout>
+</LinearLayout>

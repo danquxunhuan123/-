@@ -1,11 +1,7 @@
 package com.trs.waijiaobu.fragment;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,18 +15,19 @@ public abstract class BaseFragment extends Fragment {
 
     private Unbinder unbinder;
     protected Context mContext;
+    FragmentInit mInit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mContext = getActivity();
+        mInit = initInterface();
+        initView();
     }
 
     @Override
@@ -41,22 +38,54 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        init();
-        getData();
+    protected FragmentInit initInterface() {
+        return null;
     }
 
-    protected void init() {
+    private void initView() {
+        mInit.initSomeThing();
+        mInit.getData();
 
+        /*boolean connected = NetworkUtils.isConnected();
+        if (!connected) {
+            final LinearLayout view = (LinearLayout) getView();
+            LogUtils.dTag("view_____",view);
+            final TextView errorView = new TextView(getContext());
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            errorView.setLayoutParams(params);
+
+            errorView.setTextSize(mContext.getResources().getDimension(R.dimen.sp_14));
+            errorView.setTextColor(Color.BLACK);
+            errorView.setText("请检查网络，点击重试");
+
+            errorView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean connected = NetworkUtils.isConnected();
+                    if (connected) {
+                        view.removeView(errorView);
+                        if (mInit != null) {
+                            mInit.initSomeThing();
+                            mInit.getData();
+                        }
+                    } else Toast.makeText(mContext, "请检查网络", Toast.LENGTH_SHORT).show();
+                }
+            });
+            view.addView(errorView);
+        }else {
+            mInit.initSomeThing();
+            mInit.getData();
+        }*/
     }
 
-    protected void getData() {
-    }
+//    protected void init() {
+//
+//    }
+//
+//    protected void getData() {
+//    }
 
-    ;
 
     protected abstract int flateLayout();
 

@@ -9,12 +9,12 @@ import android.content.Context;
  */
 public class ProgressUtil {
     private static ProgressUtil instance = null;
-    private ProgressDialog progressDialog = null;
+    private static ProgressDialog progressDialog = null;
     private String loading = "正在加载...";
 
     public static ProgressUtil getInstance(Context context) {
         if (instance == null) {
-            synchronized (WebViewUtil.class) {
+            synchronized (ProgressUtil.class) {
                 if (instance == null) {
                     instance = new ProgressUtil(context);
                 }

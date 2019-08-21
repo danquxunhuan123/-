@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
+import com.trs.waijiaobu.R;
 import com.trs.waijiaobu.util.ThreadUtil;
 
 import java.io.File;
@@ -41,7 +42,7 @@ public class GlideHelper {
                 .with(view.getContext())
                 .load(url)
                 .centerCrop()
-//                .placeholder(R.drawable.loading_spinner)
+                .placeholder(R.drawable.placeholder)
                 .into(view);
     }
 
@@ -104,7 +105,7 @@ public class GlideHelper {
                 .with(view.getContext())
                 .load(url)
                 .fitCenter()
-//                .placeholder(R.drawable.loading_spinner)
+                .placeholder(R.drawable.placeholder)
                 .into(view);
     }
 

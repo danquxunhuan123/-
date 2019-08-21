@@ -154,13 +154,13 @@ public class ListCommenAdapter extends BaseAdapter {
                         Intent intent = null;
                         if ("documents".equals(subUrl) || "channels".equals(subUrl)) {
                             intent = new Intent(context, ListActivity.class);
-//                            intent.putExtra(ListActivity.ARG_PARAM2, finalCname);
-                        } else {
+                        } else
                             intent = new Intent(context, NewsDetailActivity.class);
-                        }
 
-                        intent.putExtra(ListActivity.ARG_PARAM1, finalu);
-                        context.startActivity(intent);
+                        if (intent != null) {
+                            intent.putExtra(ListActivity.ARG_PARAM1, finalu);
+                            context.startActivity(intent);
+                        }
                     }
                 });
                 break;
@@ -210,6 +210,12 @@ public class ListCommenAdapter extends BaseAdapter {
                 holder.getItemView().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                        if (!finalUrl.endsWith(".json")) {
+//                            if (mOnClickListener != null)
+//                                mOnClickListener.onClick(finalUrl);
+//                            return;
+//                        }
+
                         String subUrl = StringUtil.subUrlSuffix(finalUrl);
                         Intent intent = null;
                         if ("documents".equals(subUrl) || "channels".equals(subUrl)) {
@@ -227,6 +233,16 @@ public class ListCommenAdapter extends BaseAdapter {
             default:
                 break;
         }
+    }
+
+    public interface OnClickListener {
+        void onClick(String finalu);
+    }
+
+    private OnClickListener mOnClickListener;
+
+    public void setOnItemClickListener(OnClickListener listener) {
+        mOnClickListener = listener;
     }
 
 }

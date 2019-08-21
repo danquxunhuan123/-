@@ -8,8 +8,9 @@ import android.support.v4.view.ViewPager;
 import com.trs.waijiaobu.R;
 import com.trs.waijiaobu.adapter.ViewPagerAdapter;
 import com.trs.waijiaobu.bean.Channel;
-import com.trs.waijiaobu.presenter.IIndicatorFragmentPresenter;
 import com.trs.waijiaobu.presenter.IIndicatorFragmentPresenterImpl;
+import com.trs.waijiaobu.presenter.inter.IIndicatorFragmentPresenter;
+import com.trs.waijiaobu.util.ProgressUtil;
 import com.trs.waijiaobu.view.IIndicatorFragmentView;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.Map;
 
 import butterknife.BindView;
 
-public class ViewPagerFragment extends BaseFragment implements IIndicatorFragmentView {
+public class ViewPagerFragment extends BaseFragment implements IIndicatorFragmentView
+        , FragmentInit {
 
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
@@ -100,17 +102,29 @@ public class ViewPagerFragment extends BaseFragment implements IIndicatorFragmen
 //        }
 //    }
 
+
     @Override
-    protected void init() {
-        mPresenter = new IIndicatorFragmentPresenterImpl(this);
+    protected FragmentInit initInterface() {
+        return this;
     }
 
     @Override
-    protected void getData() {
+    public void initSomeThing() {
+        mPresenter = new IIndicatorFragmentPresenterImpl(mContext, this);
+    }
+
+    @Override
+    public void getData() {
         String url = getArguments().getString(ARG_PARAM1);
         mPresenter.getXW(url);
+        ProgressUtil.getInstance(mContext).show();
     }
 
+    @Override
+    public void onDestroy() {
+        ProgressUtil.getInstance(mContext).release();
+        super.onDestroy();
+    }
 
     @Override
     protected int flateLayout() {
@@ -119,6 +133,8 @@ public class ViewPagerFragment extends BaseFragment implements IIndicatorFragmen
 
     @Override
     public void getXW(Channel channel) {
+        ProgressUtil.getInstance(mContext).dismiss();
+
         mTitles.clear();
         mFragments.clear();
 

@@ -1,18 +1,19 @@
 package com.trs.waijiaobu.okhttp;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import java.io.IOException;
+import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.util.Map;
 
-import kotlin.ReplaceWith;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
@@ -24,9 +25,10 @@ public class OkHttpClientHelper {
     private static OkHttpClientHelper mOkHttpClient;
     private final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private OkHttpClient client;
+    private Context mContext;
 
-    private OkHttpClientHelper() {
-
+    private OkHttpClientHelper(Context context) {
+        mContext = context;
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {
@@ -34,22 +36,42 @@ public class OkHttpClientHelper {
             }
         });
         logging.level(HttpLoggingInterceptor.Level.BODY);
-        client = new OkHttpClient.Builder().addInterceptor(logging).build();
+        client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .sslSocketFactory(HttpsTrustManager.createSSLSocketFactory())
+                .hostnameVerifier(new HttpsTrustManager.TrustAllHostnameVerifier())
+                .build();
+//                .followRedirects(true)
+//                .followSslRedirects(true)
+//                .retryOnConnectionFailure(true)
+//                .cache(null)
     }
 
-    public static OkHttpClientHelper getInstance() {
+    public static OkHttpClientHelper getInstance(Context context) {
         if (mOkHttpClient == null) {
             synchronized (OkHttpClientHelper.class) {
                 if (mOkHttpClient == null) {
-                    mOkHttpClient = new OkHttpClientHelper();
+                    mOkHttpClient = new OkHttpClientHelper(context);
                 }
             }
         }
         return mOkHttpClient;
     }
 
+    public OkHttpClient getClient() {
+        return client;
+    }
+
     public void get(String url, Callback callback) {
+        boolean connected = NetworkUtils.isConnected();
+        if (!connected) {
+            ToastUtils.showShort("请检查网络，稍后重试");
+            return;
+        }
+
         if (TextUtils.isEmpty(url)) return;
+
+//        ProgressUtil.getInstance(mContext).show();
         Request request = new Request.Builder()
                 .url(url)
                 .get()

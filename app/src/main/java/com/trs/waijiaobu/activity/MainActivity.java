@@ -1,6 +1,5 @@
 package com.trs.waijiaobu.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -10,13 +9,10 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.blankj.utilcode.constant.PermissionConstants;
-import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.SizeUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.trs.waijiaobu.Constant;
 import com.trs.waijiaobu.R;
 import com.trs.waijiaobu.fragment.FragmentFactory;
@@ -51,9 +47,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void getData() {
-        boolean connected = NetworkUtils.isConnected();
-        if (!connected)
-            Toast.makeText(this, "请检查网络", Toast.LENGTH_SHORT).show();
         requestPerssions();
     }
 

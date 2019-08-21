@@ -2,24 +2,19 @@ package com.trs.waijiaobu.util;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.text.Html;
+import android.net.http.SslError;
+import android.os.Build;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
-import com.blankj.utilcode.util.ToastUtils;
-
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * 创建：liufan
@@ -31,12 +26,19 @@ public class WebViewUtil implements View.OnKeyListener {
     private WebViewUtil(Context context) {
         mWebView = new WebView(context);
         mWebView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mWebView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
+
         mWebView.getSettings().setSupportZoom(true);  //是否支持缩放，默认true
         mWebView.getSettings().setDomStorageEnabled(true);
         mWebView.getSettings().setBuiltInZoomControls(true); // 是否使用WebView内置的缩放组件，由浮动在窗口上的缩放控制和手势缩放控制组成，默认false
         mWebView.getSettings().setDisplayZoomControls(false);// 是否显示窗口悬浮的缩放控制，默认true
         mWebView.getSettings().setLoadWithOverviewMode(true);  // 是否启动概述模式浏览界面，当页面宽度超过WebView显示宽度时，缩小页面适应WebView。默认false
         mWebView.setHorizontalScrollBarEnabled(false);//水平不显示
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mWebView.getSettings().setMediaPlaybackRequiresUserGesture(false);
+        }
         mWebView.setVerticalScrollBarEnabled(false); //垂直不显示
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.getSettings().setTextZoom(100);
@@ -121,7 +123,12 @@ public class WebViewUtil implements View.OnKeyListener {
             addImageClickListner(view);   // 添加监听图片的点击js函数
         }
 
-//        @Override
+        @Override
+        public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+            handler.proceed();// 接受所有网站的证书
+        }
+
+        //        @Override
 //        public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 //            super.onReceivedError(view, errorCode, description, failingUrl);
 //        }

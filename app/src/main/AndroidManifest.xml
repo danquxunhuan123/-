@@ -4,7 +4,7 @@
     package="com.trs.waijiaobu">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- android:roundIcon="@mipmap/ic_launcher_foreground" -->
     <application
@@ -19,6 +19,7 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activity.SplashActivity"
+            android:theme="@style/SplashTheme"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,7 +35,9 @@
         <activity
             android:name=".activity.NewsDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize" />
-        <activity android:name=".activity.PicDetailActivity" />
+        <activity
+            android:name=".activity.PicDetailActivity"
+            android:launchMode="singleTop" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

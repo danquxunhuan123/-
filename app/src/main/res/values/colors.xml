@@ -6,4 +6,5 @@
 
     <color name="color_blue">#1A7FC8</color>
     <color name="color_red">#BB0000</color>
+    <color name="color_black_translant">#40000000</color>
 </resources>

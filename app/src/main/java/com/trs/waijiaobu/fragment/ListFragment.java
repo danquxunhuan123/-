@@ -14,7 +14,7 @@ import com.trs.waijiaobu.adapter.ListPicLeftAdapter;
 import com.trs.waijiaobu.adapter.MyHolder;
 import com.trs.waijiaobu.bean.Channel;
 import com.trs.waijiaobu.bean.Document;
-import com.trs.waijiaobu.presenter.IListPresenter;
+import com.trs.waijiaobu.presenter.inter.IListPresenter;
 import com.trs.waijiaobu.presenter.IListPresenterImpl;
 import com.trs.waijiaobu.util.StringUtil;
 import com.trs.waijiaobu.view.IListView;
@@ -25,7 +25,9 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class ListFragment extends BaseFragment implements IListView, SwipeRefreshLayout.OnRefreshListener, BaseAdapter.OnLoadMoreListener {
+public class ListFragment extends BaseFragment implements IListView,
+        SwipeRefreshLayout.OnRefreshListener,
+        BaseAdapter.OnLoadMoreListener, FragmentInit {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     @BindView(R.id.recycle_view)
@@ -49,8 +51,29 @@ public class ListFragment extends BaseFragment implements IListView, SwipeRefres
         return fragment;
     }
 
+//    @Override
+//    protected void init() {
+//        swipeRefreshLayout.setOnRefreshListener(this);
+//        recycleView.setRecyclerListener(new RecyclerView.RecyclerListener() {
+//            @Override
+//            public void onViewRecycled(@NonNull RecyclerView.ViewHolder viewHolder) {
+//                NiceVideoPlayer player = (NiceVideoPlayer) ((MyHolder) viewHolder).getView(R.id.video_player);
+//                if (player == NiceVideoPlayerManager.instance().getCurrentNiceVideoPlayer()) {
+//                    NiceVideoPlayerManager.instance().releaseNiceVideoPlayer();
+//                }
+//            }
+//        });
+//
+//        mPresenter = new IListPresenterImpl(this);
+//    }
+
     @Override
-    protected void init() {
+    protected int flateLayout() {
+        return R.layout.layout_list;
+    }
+
+    @Override
+    public void initSomeThing() {
         swipeRefreshLayout.setOnRefreshListener(this);
         recycleView.setRecyclerListener(new RecyclerView.RecyclerListener() {
             @Override
@@ -62,16 +85,16 @@ public class ListFragment extends BaseFragment implements IListView, SwipeRefres
             }
         });
 
-        mPresenter = new IListPresenterImpl(this);
+        mPresenter = new IListPresenterImpl(mContext, this);
     }
 
     @Override
-    protected int flateLayout() {
-        return R.layout.layout_list;
+    protected FragmentInit initInterface() {
+        return this;
     }
 
     @Override
-    protected void getData() {
+    public void getData() {
         url = getArguments().getString(ARG_PARAM1);
         cname = getArguments().getString(ARG_PARAM2);
 
@@ -84,7 +107,47 @@ public class ListFragment extends BaseFragment implements IListView, SwipeRefres
 
     @Override
     public void getListData(Object obj) {
-        swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+
+       /* List mList = null;
+        List top_datas = null;
+        if (obj instanceof Channel)
+            mList = ((Channel) obj).getGd();
+        else if (obj instanceof Document) {
+            Document doc = (Document) obj;
+
+            mList = doc.getList_datas();
+            top_datas = doc.getTop_datas();
+
+            if (top_datas != null && top_datas.size() > 0) {
+                Document.List_datasEntity entity = new Document.List_datasEntity();
+                mList.add(0, entity);
+            }
+        }
+
+        if (adapter == null) {
+            if ("走出国境".equals(cname))
+                adapter = new ListPicLeftAdapter(mList, mContext);
+            else if ("发言人表态".equals(cname) || "外交部新闻".equals(cname))
+                adapter = new ListBigPicAdapter(mList, mContext);
+            else
+                adapter = new ListCommenAdapter(null, mList, mContext);
+
+            adapter.setOnLoadMoreListener(this);
+            recycleView.setLayoutManager(new LinearLayoutManager(mContext));
+            recycleView.setAdapter(adapter);
+        } else {
+            if (pageCount == 0) {
+                if (adapter instanceof ListCommenAdapter) {
+                    ((ListCommenAdapter) adapter).setBannerData(top_datas);
+                }
+                adapter.updateData(mList);
+            } else
+                adapter.addData(mList);
+        }*/
+
+
         if (obj instanceof Channel) {
             List<Channel.GdEntity> mList = ((Channel) obj).getGd();
 

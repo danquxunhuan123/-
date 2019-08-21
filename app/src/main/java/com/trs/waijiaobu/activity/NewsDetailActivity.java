@@ -1,31 +1,32 @@
 package com.trs.waijiaobu.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.RegexUtils;
 import com.blankj.utilcode.util.ToastUtils;
 import com.trs.waijiaobu.R;
 import com.trs.waijiaobu.bean.Detail;
-import com.trs.waijiaobu.glide.GlideHelper;
-import com.trs.waijiaobu.presenter.IDetailPresenter;
+import com.trs.waijiaobu.fragment.PicsDialogFragment;
 import com.trs.waijiaobu.presenter.IDetailPresenterImpl;
-import com.trs.waijiaobu.presenter.IDetailView;
+import com.trs.waijiaobu.presenter.inter.IDetailPresenter;
+import com.trs.waijiaobu.presenter.inter.IDetailView;
 import com.trs.waijiaobu.util.AndroidShareHelper;
 import com.trs.waijiaobu.util.ProgressUtil;
 import com.trs.waijiaobu.util.ReadFromFile;
-import com.trs.waijiaobu.util.StringUtil;
 import com.trs.waijiaobu.util.StringUtils;
 import com.trs.waijiaobu.util.WebViewUtil;
 import com.xiao.nicevideoplayer.NiceVideoPlayer;
 import com.xiao.nicevideoplayer.NiceVideoPlayerManager;
 import com.xiao.nicevideoplayer.TxVideoPlayerController;
-
-import java.io.File;
 
 import butterknife.BindView;
 
@@ -72,11 +73,34 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
     protected void getData() {
         url = getIntent().getStringExtra(ARG_PARAM1);
         if (url.endsWith(".json")) {
-            mPresenter = new IDetailPresenterImpl(this);
+            mPresenter = new IDetailPresenterImpl(this,this);
             localHtmlModel = ReadFromFile.getFromAssets(this, "xhwDetailedView.html");
             mPresenter.getData(url);
-        } else {
+        } else if (url.endsWith(".doc"))
+            openBrowser(this, url);
+        else
             mWebViewUtil.loadUrl(url);
+    }
+
+
+    /**
+     * 调用第三方浏览器打开
+     *
+     * @param context
+     * @param url     要浏览的资源地址
+     */
+    public static void openBrowser(Context context, String url) {
+        final Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        // 注意此处的判断intent.resolveActivity()可以返回显示该Intent的Activity对应的组件名
+        // 官方解释 : Name of the component implementing an activity that can display the intent
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            final ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+            LogUtils.d("componentName = " + componentName.getClassName());
+            context.startActivity(Intent.createChooser(intent, "请选择浏览器"));
+        } else {
+            Toast.makeText(context.getApplicationContext(), "请下载浏览器", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -110,7 +134,7 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
                     }
                });*/
 
-        if (url.endsWith(".json")){
+        if (url.endsWith(".json")) {
             if (!TextUtils.isEmpty(mDetail.getDatas().getSharelink()))
 //                AndroidShareHelper.shareMsg(this,mDetail.getDatas().getTitle(),
 //                        mDetail.getDatas().getBody(),null);
@@ -118,8 +142,8 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
             else {
                 ToastUtils.showShort("sharelink is empty");
             }
-        }else
-            AndroidShareHelper.shareTxt(NewsDetailActivity.this,url);
+        } else
+            AndroidShareHelper.shareTxt(NewsDetailActivity.this, url);
     }
 
     public void back(View view) {
@@ -137,6 +161,7 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
         super.onPause();
         mWebViewUtil.onPause();
     }
+
 
     @Override
     protected void onDestroy() {
@@ -167,6 +192,9 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
     protected void onStop() {
         super.onStop();
         NiceVideoPlayerManager.instance().releaseNiceVideoPlayer();  // 释放掉播放器
+
+        if (url.endsWith(".doc"))
+            finish();
     }
 
     @Override
@@ -179,9 +207,12 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
 
     @Override
     public void onImgClick(String[] imgs, int index) {
-        Intent intent = new Intent(this, PicDetailActivity.class);
-        intent.putExtra(PicDetailActivity.ARG_PARAM1, imgs);
-        intent.putExtra(PicDetailActivity.ARG_PARAM2, index);
-        startActivity(intent);
+//        Intent intent = new Intent(this, PicDetailActivity.class);
+//        intent.putExtra(PicDetailActivity.ARG_PARAM1, imgs);
+//        intent.putExtra(PicDetailActivity.ARG_PARAM2, index);
+//        startActivity(intent);
+
+        PicsDialogFragment picFragment = PicsDialogFragment.newInstance(imgs,index);
+        picFragment.show(getSupportFragmentManager(), "PIC");
     }
 }

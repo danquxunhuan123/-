@@ -1,9 +1,13 @@
 package com.trs.waijiaobu;
 
+import android.util.ArrayMap;
+import android.util.SparseArray;
+
 import com.blankj.utilcode.util.Utils;
 
 import org.junit.Test;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,10 +22,13 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class ExampleUnitTest {
+
     @Test
     public void addition_isCorrect() {
 //        assertEquals(4, 2 + 2);
     }
+
+
 
 
 }

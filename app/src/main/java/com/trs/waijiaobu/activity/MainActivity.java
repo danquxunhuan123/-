@@ -31,7 +31,7 @@ public class MainActivity extends BaseActivity {
     private int checkId;
     private RadioButton oldButton;
     private List<Fragment> fragments = new ArrayList<>();
-    private String[] names = {"新闻", "领事", "资料", "服务", "微博"};
+    private String[] names = {"新闻", "领事", "资料", "服务", "新媒体"};
     private int[] drawables = {R.drawable.menu_xinwen, R.drawable.menu_lingshi, R.drawable.menu_ziliao,
             R.drawable.menu_fuwu, R.drawable.menu_weibo};
 

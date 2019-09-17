@@ -56,24 +56,25 @@ public class GlideHelper {
     }
 
     public void loadBitmap(Context context, String url, final OnLoadedListener listener) {
-        if (!TextUtils.isEmpty(url)) {
-            final FutureTarget<Bitmap> target = Glide.with(context).asBitmap().load(url).submit();
-            ThreadUtil.submit(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Bitmap bitmap = target.get();
-                        listener.onLoadedBitmap(bitmap);
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        } else {
+        if (TextUtils.isEmpty(url)) {
             ToastUtils.showShort("url is empty");
+            return;
         }
+
+        final FutureTarget<Bitmap> target = Glide.with(context).asBitmap().load(url).submit();
+        ThreadUtil.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Bitmap bitmap = target.get();
+                    listener.onLoadedBitmap(bitmap);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
     }
 

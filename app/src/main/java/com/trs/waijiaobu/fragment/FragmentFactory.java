@@ -30,7 +30,7 @@ public interface FragmentFactory {
                     fragment = ViewPagerFragment.newInstance(Constant.XWFW, "");
                     break;
                 case 4:
-                    fragment = ListFragment.newInstance(Constant.WB, "");
+                    fragment = WebFragment.newInstance(Constant.XMT, "");
                     break;
             }
             return fragment;

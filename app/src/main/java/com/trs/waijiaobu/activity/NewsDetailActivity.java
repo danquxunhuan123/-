@@ -73,7 +73,7 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
     protected void getData() {
         url = getIntent().getStringExtra(ARG_PARAM1);
         if (url.endsWith(".json")) {
-            mPresenter = new IDetailPresenterImpl(this,this);
+            mPresenter = new IDetailPresenterImpl(this, this);
             localHtmlModel = ReadFromFile.getFromAssets(this, "xhwDetailedView.html");
             mPresenter.getData(url);
         } else if (url.endsWith(".doc"))
@@ -134,16 +134,32 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
                     }
                });*/
 
-        if (url.endsWith(".json")) {
-            if (!TextUtils.isEmpty(mDetail.getDatas().getSharelink()))
-//                AndroidShareHelper.shareMsg(this,mDetail.getDatas().getTitle(),
-//                        mDetail.getDatas().getBody(),null);
-                AndroidShareHelper.shareTxt(NewsDetailActivity.this, mDetail.getDatas().getSharelink());
-            else {
-                ToastUtils.showShort("sharelink is empty");
-            }
-        } else
+        if (!url.endsWith(".json")){
             AndroidShareHelper.shareTxt(NewsDetailActivity.this, url);
+            return;
+        }
+
+        if (mDetail == null){
+            ToastUtils.showShort("null");
+            return;
+        }
+
+        if (TextUtils.isEmpty(mDetail.getDatas().getSharelink())){
+            ToastUtils.showShort("sharelink is empty");
+            return;
+        }
+
+        AndroidShareHelper.shareTxt(NewsDetailActivity.this, mDetail.getDatas().getSharelink());
+
+//        if (url.endsWith(".json")) {
+//            if (mDetail != null)
+//                if (!TextUtils.isEmpty(mDetail.getDatas().getSharelink()))
+//                    AndroidShareHelper.shareTxt(NewsDetailActivity.this, mDetail.getDatas().getSharelink());
+//                else {
+//                    ToastUtils.showShort("sharelink is empty");
+//                }
+//        } else
+//            AndroidShareHelper.shareTxt(NewsDetailActivity.this, url);
     }
 
     public void back(View view) {
@@ -212,7 +228,7 @@ public class NewsDetailActivity extends BaseActivity implements IDetailView, Web
 //        intent.putExtra(PicDetailActivity.ARG_PARAM2, index);
 //        startActivity(intent);
 
-        PicsDialogFragment picFragment = PicsDialogFragment.newInstance(imgs,index);
+        PicsDialogFragment picFragment = PicsDialogFragment.newInstance(imgs, index);
         picFragment.show(getSupportFragmentManager(), "PIC");
     }
 }

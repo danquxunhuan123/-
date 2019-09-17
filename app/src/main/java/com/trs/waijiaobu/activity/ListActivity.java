@@ -88,6 +88,8 @@ public class ListActivity extends BaseActivity implements IListView, SwipeRefres
         pageCount--;
         if (adapter != null)
             adapter.loadMoreEnd();
+
+
     }
 
     @Override

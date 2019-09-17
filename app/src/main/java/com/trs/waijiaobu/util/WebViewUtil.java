@@ -105,7 +105,9 @@ public class WebViewUtil implements View.OnKeyListener {
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             mWebView.getSettings().setBlockNetworkImage(true);
-            listener.onPageStart();
+
+            if (listener != null)
+                listener.onPageStart();
         }
 
         @Override
@@ -117,7 +119,9 @@ public class WebViewUtil implements View.OnKeyListener {
                 mWebView.getSettings().setBlockNetworkImage(false);
                 mWebView.getSettings().setLoadsImagesAutomatically(true);
             }
-            listener.onPageFinished();
+
+            if (listener != null)
+                listener.onPageFinished();
 
             imgReset(view);//重置webview中img标签的图片大小
             addImageClickListner(view);   // 添加监听图片的点击js函数
@@ -136,8 +140,8 @@ public class WebViewUtil implements View.OnKeyListener {
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             super.onReceivedError(view, request, error);
-
-            listener.onReceivedError();
+            if (listener != null)
+                listener.onReceivedError();
         }
     }
 

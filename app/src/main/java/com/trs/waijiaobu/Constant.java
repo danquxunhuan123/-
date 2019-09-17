@@ -15,6 +15,7 @@ public class Constant {
     public static final String XWFW = "https://www.fmprc.gov.cn/chn/gxh/tyb/mobile/xwfw/channels.json";
 
     public static final String WB = "https://www.fmprc.gov.cn/chn/gxh/tyb/mobile/wb/documents.json";
+    public static final String XMT = "https://www.fmprc.gov.cn/chn/gxh/tyb/mobile/xmtjz/";
 
     public static final String PUSH_MSG = "https://www.fmprc.gov.cn/chn/gxh/tyb/mobile/notify/documents.json";
 }
